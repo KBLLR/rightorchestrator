@@ -1,0 +1,27 @@
+{
+  "name": "rightorchestrator",
+  "version": "1.0.0",
+  "description": "Zero-dependency right-click floating HUD and LLM tool calling agent console for local MLX models",
+  "main": "./dist/rightorchestrator.umd.js",
+  "module": "./dist/rightorchestrator.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/rightorchestrator.mjs",
+      "require": "./dist/rightorchestrator.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.0.0"
+  }
+}
