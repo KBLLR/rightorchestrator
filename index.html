@@ -27,20 +27,25 @@
       margin: 0;
       padding: 40px;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       min-height: 100vh;
       box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
     }
 
     .container {
       max-width: 600px;
       width: 100%;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(8px);
+      background: rgba(209, 209, 208, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 30px;
       box-sizing: border-box;
+      z-index: 10;
+      box-shadow: 0 12px 24px rgba(16, 18, 16, 0.05);
     }
 
     h1 {
@@ -76,7 +81,7 @@
     }
 
     input, textarea {
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.55);
       border: 1px solid var(--border);
       padding: 10px;
       font-family: var(--font-mono);
@@ -105,7 +110,7 @@
     .tool-log {
       margin-top: 30px;
       border: 1px dashed var(--border);
-      background: rgba(0,0,0,0.02);
+      background: rgba(0, 0, 0, 0.02);
       padding: 15px;
       font-family: var(--font-mono);
       font-size: 11px;
@@ -113,9 +118,86 @@
       max-height: 150px;
       overflow-y: auto;
     }
+
+    /* HUD Corner Telemetry */
+    .hud-corner {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--fg2);
+      letter-spacing: 0.08em;
+      line-height: 1.6;
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+    }
+
+    .hud-corner-tl {
+      top: 30px;
+      left: 30px;
+      text-align: left;
+      border-left: 2px solid var(--border);
+      border-top: 2px solid var(--border);
+      padding-left: 8px;
+      padding-top: 8px;
+    }
+
+    .hud-corner-tr {
+      top: 30px;
+      right: 30px;
+      text-align: right;
+      border-right: 2px solid var(--border);
+      border-top: 2px solid var(--border);
+      padding-right: 8px;
+      padding-top: 8px;
+    }
+
+    .hud-corner-bl {
+      bottom: 30px;
+      left: 30px;
+      text-align: left;
+      border-left: 2px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      padding-left: 8px;
+      padding-bottom: 8px;
+    }
+
+    .hud-corner-br {
+      bottom: 30px;
+      right: 30px;
+      text-align: right;
+      border-right: 2px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      padding-right: 8px;
+      padding-bottom: 8px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- HUI HUD Corner Overlays -->
+  <div class="hud-corner hud-corner-tl">
+    SYS // RIGHTORCHESTRATOR<br>
+    VERSION // 1.0.0
+  </div>
+  
+  <div class="hud-corner hud-corner-tr">
+    AGENT // ANTIGRAVITY<br>
+    STATUS // ACTIVE
+  </div>
+
+  <div class="hud-corner hud-corner-bl">
+    LOC // 127.0.0.1:8090<br>
+    GEOMETRY // 440X520
+  </div>
+
+  <div class="hud-corner hud-corner-br">
+    DESIGNED BY // KBLLR<br>
+    COMPILED // 2026.06.04
+  </div>
+
+  <!-- Centered Demo Container -->
   <div class="container">
     <h1>RightOrchestrator</h1>
     <p>
