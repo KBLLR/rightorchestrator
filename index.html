@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RightOrchestrator Demo</title>
+  <style>
+    :root {
+      --bg: #f4f3f0;
+      --fg1: #2d2824;
+      --fg2: #6b6560;
+      --fg3: #9a9a9a;
+      --border: #b5b5b3;
+      --accent: #2d2824;
+      --space-4: 8px;
+      --space-5: 10px;
+      --space-6: 12px;
+      --font-body: system-ui, sans-serif;
+      --font-mono: monospace;
+      --font-heading: "Chakra Petch", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg1);
+      font-family: var(--font-body);
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(8px);
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0;
+      font-size: 24px;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 15px;
+    }
+
+    p {
+      line-height: 1.6;
+      color: var(--fg2);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg2);
+    }
+
+    input, textarea {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      padding: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fg1);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: var(--fg1);
+      color: var(--bg);
+      padding: 3px 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 10px;
+    }
+
+    .tool-log {
+      margin-top: 30px;
+      border: 1px dashed var(--border);
+      background: rgba(0,0,0,0.02);
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg2);
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RightOrchestrator</h1>
+    <p>
+      This is a client demonstration page. 
+      Right-click anywhere on the empty workspace background to summon the floating HUD console.
+    </p>
+
+    <div class="form-group">
+      <label for="demo-input-1">Target Input Field 1</label>
+      <input type="text" id="demo-input-1" placeholder="Focus here, then right-click background to inject..." />
+    </div>
+
+    <div class="form-group">
+      <label for="demo-textarea-2">Target Textarea 2</label>
+      <textarea id="demo-textarea-2" rows="4" placeholder="Focus here, then right-click background to inject..."></textarea>
+    </div>
+
+    <div class="badge">Right-click empty space to test</div>
+
+    <div class="tool-log" id="tool-execution-log">
+      <div>[SYSTEM] Tool execution logs will output here...</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initRightOrchestration } from './src/index.ts';
+
+    // Helper to print logs on the demo page
+    function logToolCall(name, args, result) {
+      const container = document.getElementById('tool-execution-log');
+      if (container) {
+        const entry = document.createElement('div');
+        entry.style.marginTop = '4px';
+        entry.innerHTML = `<span style="color: #3d6e96">[TOOL CALL]</span> ${name}(${JSON.stringify(args)}) => <span style="color: #8a3030">${JSON.stringify(result)}</span>`;
+        container.appendChild(entry);
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+
+    // Initialize RightOrchestrator
+    initRightOrchestration({
+      gatewayUrl: 'http://127.0.0.1:8090',
+      model: 'text/qwen2.5-coder-7b-instruct-4bit',
+      theme: 'brutalist-light',
+      presets: {
+        general: [
+          { label: "Format JSON", prompt: "Convert the current text to a clean JSON object." },
+          { label: "Explain Code", prompt: "Add comments explaining the logic of this code snippet." },
+          { label: "Translate", prompt: "Translate this text to Spanish." }
+        ]
+      },
+      onToolCall: async (name, args) => {
+        // Mock search tool execution
+        let result = "No mock output available.";
+        if (name === 'web_search') {
+          result = {
+            query: args.query,
+            results: [
+              { title: "RightOrchestrator Documentation", snippet: "Unintrusive private context menu assistant HUD console." }
+            ]
+          };
+        } else {
+          result = { status: "success", executed: name, parameters: args };
+        }
+        
+        logToolCall(name, args, result);
+        return result;
+      }
+    });
+  </script>
+</body>
+</html>
