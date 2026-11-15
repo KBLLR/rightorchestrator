@@ -486,7 +486,12 @@ export async function handleOrchestration(query: string): Promise<void> {
       });
       if (!res.ok) throw new Error(`Upstream error: HTTP ${res.status}`);
       const data = await res.json();
-      content = data?.output?.[0]?.content || "";
+      const first = data?.output?.[0]?.content;
+      // Local patch: accept the standard Responses shape (content parts / output_text) as well as a plain string
+      content = typeof first === "string"
+        ? first
+        : (typeof data?.output_text === "string" && data.output_text) ||
+          (Array.isArray(first) ? first.map((part: any) => part?.text || "").join("") : "");
     }
 
     if (!content) {
