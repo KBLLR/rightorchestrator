@@ -4,9 +4,9 @@ function $() {
 }
 function I(o = []) {
   const r = (n) => {
-    var a, l;
+    var s, l;
     if (!n) return;
-    if (n.tagName === "INPUT" || n.tagName === "TEXTAREA" || n.contentEditable === "true" || ((a = n.getAttribute) == null ? void 0 : a.call(n, "contenteditable")) === "true" || ((l = n.getAttribute) == null ? void 0 : l.call(n, "contenteditable")) === "plaintext-only") {
+    if (n.tagName === "INPUT" || n.tagName === "TEXTAREA" || n.contentEditable === "true" || ((s = n.getAttribute) == null ? void 0 : s.call(n, "contenteditable")) === "true" || ((l = n.getAttribute) == null ? void 0 : l.call(n, "contenteditable")) === "plaintext-only") {
       if (o.includes(n.id)) return;
       z = n;
     }
@@ -19,7 +19,7 @@ function I(o = []) {
     r(t);
   });
 }
-let d = null, S = !1, g = null, w = null, k = [], v = "general", h = {
+let d = null, S = !1, b = null, w = null, k = [], v = "general", f = {
   gatewayUrl: "http://127.0.0.1:8090",
   model: "text/qwen2.5-coder-7b-instruct-4bit",
   theme: "brutalist-light"
@@ -31,7 +31,7 @@ const M = {
     { label: "Draft Reply", prompt: "Draft a brief, professional reply based on this context." }
   ]
 }, H = window.SpeechRecognition || window.webkitSpeechRecognition;
-H && (g = new H(), g.continuous = !1, g.interimResults = !1, g.lang = "en-US");
+H && (b = new H(), b.continuous = !1, b.interimResults = !1, b.lang = "en-US");
 function P() {
   if (document.getElementById("hud-styles")) return;
   const o = document.createElement("style");
@@ -287,21 +287,21 @@ function U(o) {
   const r = o.getContext("2d");
   if (!r) return;
   const n = () => {
-    const a = o.getBoundingClientRect();
-    o.width = a.width, o.height = a.height;
+    const s = o.getBoundingClientRect();
+    o.width = s.width, o.height = s.height;
   };
   n();
   const t = () => {
     if (!w) return;
-    const a = o.width, l = o.height;
-    r.clearRect(0, 0, a, l);
-    const e = 45, u = a / e - 2, i = Date.now() * 5e-3, c = getComputedStyle(document.documentElement).getPropertyValue("--status-red").trim() || "#8a3030", p = getComputedStyle(document.documentElement).getPropertyValue("--status-blue").trim() || "#3d6e96";
-    r.fillStyle = S ? c : p;
-    for (let s = 0; s < e; s++) {
-      let f = 0.1;
-      S ? f = Math.abs(Math.sin(s * 0.25 + i * 3.5) * Math.cos(s * 0.1) * 0.7) + 0.1 : f = Math.abs(Math.sin(s * 0.1 + i) * Math.cos(s * 0.05) * 0.2) + 0.05;
-      const y = f * (l * 0.75) + 3, E = s * (u + 2), R = (l - y) / 2;
-      r.fillRect(E, R, u, y);
+    const s = o.width, l = o.height;
+    r.clearRect(0, 0, s, l);
+    const e = 45, p = s / e - 2, a = Date.now() * 5e-3, c = getComputedStyle(document.documentElement).getPropertyValue("--status-red").trim() || "#8a3030", u = getComputedStyle(document.documentElement).getPropertyValue("--status-blue").trim() || "#3d6e96";
+    r.fillStyle = S ? c : u;
+    for (let i = 0; i < e; i++) {
+      let h = 0.1;
+      S ? h = Math.abs(Math.sin(i * 0.25 + a * 3.5) * Math.cos(i * 0.1) * 0.7) + 0.1 : h = Math.abs(Math.sin(i * 0.1 + a) * Math.cos(i * 0.05) * 0.2) + 0.05;
+      const y = h * (l * 0.75) + 3, E = i * (p + 2), R = (l - y) / 2;
+      r.fillRect(E, R, p, y);
     }
     w = requestAnimationFrame(t);
   };
@@ -311,21 +311,21 @@ function N() {
   w && (cancelAnimationFrame(w), w = null);
 }
 function Y(o, r) {
-  if (!g) {
-    b("SYSTEM", "Speech recognition is not supported in this browser.", "hud-log-system");
+  if (!b) {
+    g("SYSTEM", "Speech recognition is not supported in this browser.", "hud-log-system");
     return;
   }
   if (S)
-    g.stop();
+    b.stop();
   else {
     S = !0, o && (o.classList.add("active"), o.innerHTML = "ON");
     const t = document.getElementById("hud-viz-status-label");
-    t && (t.textContent = "LISTENING... SPEAK NOW"), g.start(), g.onresult = (a) => {
-      const l = a.results[0][0].transcript;
-      r && (r.value = l), b("USER (VOICE)", l, "hud-log-in"), L(l);
-    }, g.onerror = (a) => {
-      console.error("Speech recognition error:", a.error), b("SYSTEM", `Mic error: ${a.error}`, "hud-log-system"), n();
-    }, g.onend = () => {
+    t && (t.textContent = "LISTENING... SPEAK NOW"), b.start(), b.onresult = (s) => {
+      const l = s.results[0][0].transcript;
+      r && (r.value = l), g("USER (VOICE)", l, "hud-log-in"), L(l);
+    }, b.onerror = (s) => {
+      console.error("Speech recognition error:", s.error), g("SYSTEM", `Mic error: ${s.error}`, "hud-log-system"), n();
+    }, b.onend = () => {
       n();
     };
   }
@@ -335,67 +335,67 @@ function Y(o, r) {
     t && (t.textContent = `ORCHESTRATOR HUD // CASE: ${v.toUpperCase()}`);
   }
 }
-function b(o, r, n) {
+function g(o, r, n) {
   const t = document.getElementById("hud-console-log");
   if (!t) return;
-  const a = document.createElement("div");
-  a.innerHTML = `<span class="${n}">[${o}]</span> ${r}`, t.appendChild(a), t.scrollTop = t.scrollHeight, k.push({ speaker: o, text: r, className: n });
+  const s = document.createElement("div");
+  s.innerHTML = `<span class="${n}">[${o}]</span> ${r}`, t.appendChild(s), t.scrollTop = t.scrollHeight, k.push({ speaker: o, text: r, className: n });
 }
 async function L(o) {
-  var a, l;
+  var s, l;
   const r = document.getElementById("hud-apply-container"), n = document.getElementById("hud-apply-textarea");
   if (!o || !o.trim()) return;
   let t = "You are the Orchestrator HUD, a floating helper interface. Use prompting rules based on research to help the operator design structured prompts or scripts. Do NOT write conversational replies or wrap outputs in markdown code blocks. Output ONLY the raw content directly.";
-  h.systemInstructions && (typeof h.systemInstructions == "function" ? t = h.systemInstructions(v) : t = h.systemInstructions[v] || h.systemInstructions.general || t), b("SYSTEM", "Querying local LLM node...", "hud-log-system");
+  f.systemInstructions && (typeof f.systemInstructions == "function" ? t = f.systemInstructions(v) : t = f.systemInstructions[v] || f.systemInstructions.general || t), g("SYSTEM", "Querying local LLM node...", "hud-log-system");
   try {
-    let e = "", u = !1;
+    let e = "", p = !1;
     try {
       const c = await fetch("/api/mlx/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: o, systemInstruction: t })
-      }), p = c.headers.get("content-type") || "";
-      c.ok && p.includes("application/json") ? e = (await c.json()).content : u = !0;
+      }), u = c.headers.get("content-type") || "";
+      c.ok && u.includes("application/json") ? e = (await c.json()).content : p = !0;
     } catch {
-      u = !0;
+      p = !0;
     }
-    if (u) {
-      const c = await fetch(`${h.gatewayUrl}/v1/responses`, {
+    if (p) {
+      const c = await fetch(`${f.gatewayUrl}/v1/responses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: h.model,
+          model: f.model,
           input: o,
           instructions: t,
           stream: !1
         })
       });
       if (!c.ok) throw new Error(`Upstream error: HTTP ${c.status}`);
-      const p = await c.json();
-      e = ((l = (a = p == null ? void 0 : p.output) == null ? void 0 : a[0]) == null ? void 0 : l.content) || "";
+      const u = await c.json(), i = (l = (s = u == null ? void 0 : u.output) == null ? void 0 : s[0]) == null ? void 0 : l.content;
+      e = typeof i == "string" ? i : typeof (u == null ? void 0 : u.output_text) == "string" && u.output_text || (Array.isArray(i) ? i.map((h) => (h == null ? void 0 : h.text) || "").join("") : "");
     }
     if (!e)
       throw new Error("Empty response returned from LLM.");
-    let i = !1;
+    let a = !1;
     if (e.trim().startsWith("{"))
       try {
         const c = JSON.parse(e);
-        if (c.tool && h.onToolCall) {
-          i = !0, b("SYSTEM", `Tool call detected: ${c.tool}...`, "hud-log-system");
-          const p = await h.onToolCall(c.tool, c.args || {});
-          b("SYSTEM", "Tool response received. Resuming...", "hud-log-system");
-          const s = `${o}
+        if (c.tool && f.onToolCall) {
+          a = !0, g("SYSTEM", `Tool call detected: ${c.tool}...`, "hud-log-system");
+          const u = await f.onToolCall(c.tool, c.args || {});
+          g("SYSTEM", "Tool response received. Resuming...", "hud-log-system");
+          const i = `${o}
 
 [SYSTEM] Tool "${c.tool}" returned result:
-${JSON.stringify(p)}`;
-          await L(s);
+${JSON.stringify(u)}`;
+          await L(i);
           return;
         }
       } catch {
       }
-    i || (b("ORCHESTRATOR", e, "hud-log-out"), n && r && (n.value = e, r.classList.remove("hidden")));
+    a || (g("ORCHESTRATOR", e, "hud-log-out"), n && r && (n.value = e, r.classList.remove("hidden")));
   } catch (e) {
-    b("ERROR", e.message || "Failed to reach LLM node.", "hud-log-system");
+    g("ERROR", e.message || "Failed to reach LLM node.", "hud-log-system");
   }
 }
 function O(o) {
@@ -403,51 +403,51 @@ function O(o) {
   if (!r || !r.value) return;
   const n = r.value;
   let t = [];
-  if (h.applyTargets)
-    if (typeof h.applyTargets == "function") {
-      const e = h.applyTargets(v, n);
+  if (f.applyTargets)
+    if (typeof f.applyTargets == "function") {
+      const e = f.applyTargets(v, n);
       e && (t = Array.isArray(e) ? e : [e]);
     } else {
-      const e = h.applyTargets[v];
-      e && (Array.isArray(e) ? e : [e]).forEach((i) => {
-        const c = document.querySelector(i);
+      const e = f.applyTargets[v];
+      e && (Array.isArray(e) ? e : [e]).forEach((a) => {
+        const c = document.querySelector(a);
         c && t.push(c);
       });
     }
-  const a = $();
-  if (t.filter(Boolean).length === 0 && a && t.push(a), t = Array.from(new Set(t.filter(Boolean))), t.length === 0) {
-    b("SYSTEM", "No active target field found. Copying to clipboard instead.", "hud-log-system"), navigator.clipboard.writeText(n);
+  const s = $();
+  if (t.filter(Boolean).length === 0 && s && t.push(s), t = Array.from(new Set(t.filter(Boolean))), t.length === 0) {
+    g("SYSTEM", "No active target field found. Copying to clipboard instead.", "hud-log-system"), navigator.clipboard.writeText(n);
     return;
   }
   t.forEach((e) => {
-    var i, c, p;
-    const u = e.contentEditable === "true" || ((i = e.getAttribute) == null ? void 0 : i.call(e, "contenteditable")) === "true" || ((c = e.getAttribute) == null ? void 0 : c.call(e, "contenteditable")) === "plaintext-only";
+    var a, c, u;
+    const p = e.contentEditable === "true" || ((a = e.getAttribute) == null ? void 0 : a.call(e, "contenteditable")) === "true" || ((c = e.getAttribute) == null ? void 0 : c.call(e, "contenteditable")) === "plaintext-only";
     if (e.tagName === "INPUT" || e.tagName === "TEXTAREA") {
-      const s = e;
-      if (o === "append" && s.value.trim()) {
-        const f = s.value.endsWith(";") || s.value.endsWith(",") ? " " : `
+      const i = e;
+      if (o === "append" && i.value.trim()) {
+        const h = i.value.endsWith(";") || i.value.endsWith(",") ? " " : `
 `;
-        s.value = s.value.trim() + f + n;
+        i.value = i.value.trim() + h + n;
       } else
-        s.value = n;
-    } else u && (o === "append" && ((p = e.textContent) != null && p.trim()) ? e.textContent = e.textContent.trim() + `
+        i.value = n;
+    } else p && (o === "append" && ((u = e.textContent) != null && u.trim()) ? e.textContent = e.textContent.trim() + `
 ` + n : e.textContent = n);
     e.dispatchEvent(new Event("input", { bubbles: !0 })), e.dispatchEvent(new Event("change", { bubbles: !0 })), e.dispatchEvent(new Event("blur", { bubbles: !0 }));
-  }), b("SYSTEM", `Applied content to ${t.map((e) => e.id || e.tagName).join(", ")}.`, "hud-log-system"), r.value = "";
+  }), g("SYSTEM", `Applied content to ${t.map((e) => e.id || e.tagName).join(", ")}.`, "hud-log-system"), r.value = "";
   const l = document.getElementById("hud-apply-container");
   l && l.classList.add("hidden"), setTimeout(() => {
     C();
   }, 1e3);
 }
 function D() {
-  if (h.detectCase)
-    return h.detectCase();
+  if (f.detectCase)
+    return f.detectCase();
   const o = document.body.dataset.case;
   return o || "general";
 }
 function X(o, r) {
   P(), v = D(), d || (d = document.createElement("div"), d.className = "hud-panel", d.id = "orchestrator-hud-panel", document.body.appendChild(d));
-  const n = h.presets || {}, t = { ...M, ...n }, a = t[v] || t.general || M.general;
+  const n = f.presets || {}, t = { ...M, ...n }, s = t[v] || t.general || M.general;
   d.innerHTML = `
     <div class="hud-header" id="hud-header-drag">
       <div class="hud-title">
@@ -469,7 +469,7 @@ function X(o, r) {
 
       <!-- Quick Action Presets -->
       <div class="hud-actions-grid">
-        ${a.map((m) => `
+        ${s.map((m) => `
           <button class="hud-action-btn" data-preset-prompt="${m.prompt}" title="${m.prompt}">
             ${m.label}
           </button>
@@ -493,22 +493,22 @@ function X(o, r) {
     </div>
   `;
   const l = 440, e = 520;
-  let u = o - l / 2, i = r - 30;
-  u + l > window.innerWidth && (u = window.innerWidth - l - 20), u < 20 && (u = 20), i + e > window.innerHeight && (i = window.innerHeight - e - 20), i < 20 && (i = 20), d.style.left = `${u}px`, d.style.top = `${i}px`, setTimeout(() => {
+  let p = o - l / 2, a = r - 30;
+  p + l > window.innerWidth && (p = window.innerWidth - l - 20), p < 20 && (p = 20), a + e > window.innerHeight && (a = window.innerHeight - e - 20), a < 20 && (a = 20), d.style.left = `${p}px`, d.style.top = `${a}px`, setTimeout(() => {
     d && d.classList.add("active");
   }, 50);
-  const c = d.querySelector("#hud-close-btn"), p = d.querySelector("#hud-mic-btn"), s = d.querySelector("#hud-input-field"), f = d.querySelector("#hud-visualizer-canvas"), y = d.querySelector("#hud-header-drag");
-  c.addEventListener("click", C), p.addEventListener("click", () => {
-    Y(p, s);
-  }), s.addEventListener("keydown", (m) => {
+  const c = d.querySelector("#hud-close-btn"), u = d.querySelector("#hud-mic-btn"), i = d.querySelector("#hud-input-field"), h = d.querySelector("#hud-visualizer-canvas"), y = d.querySelector("#hud-header-drag");
+  c.addEventListener("click", C), u.addEventListener("click", () => {
+    Y(u, i);
+  }), i.addEventListener("keydown", (m) => {
     if (m.key === "Enter") {
-      const x = s.value.trim();
-      x && (b("USER", x, "hud-log-in"), s.value = "", L(x));
+      const x = i.value.trim();
+      x && (g("USER", x, "hud-log-in"), i.value = "", L(x));
     }
   }), d.querySelectorAll(".hud-action-btn").forEach((m) => {
     m.addEventListener("click", () => {
       const A = m.dataset.presetPrompt || "";
-      b("USER (PRESET)", A, "hud-log-in"), L(A);
+      g("USER (PRESET)", A, "hud-log-in"), L(A);
     });
   });
   const E = d.querySelector("#hud-btn-apply-overwrite"), R = d.querySelector("#hud-btn-apply-append");
@@ -517,34 +517,34 @@ function X(o, r) {
   T && k.length > 0 && (T.innerHTML = "", k.forEach((m) => {
     const x = document.createElement("div");
     x.innerHTML = `<span class="${m.className}">[${m.speaker}]</span> ${m.text}`, T.appendChild(x);
-  }), T.scrollTop = T.scrollHeight), U(f), setTimeout(() => {
-    s && s.focus();
+  }), T.scrollTop = T.scrollHeight), U(h), setTimeout(() => {
+    i && i.focus();
   }, 100);
 }
 function C() {
   d && (d.classList.remove("active"), N());
 }
 function W(o, r) {
-  let n = 0, t = 0, a = !1;
-  const l = (i) => {
-    if (i.target.closest("#hud-close-btn")) return;
-    a = !0;
-    const c = i instanceof MouseEvent ? i.clientX : i.touches[0].clientX, p = i instanceof MouseEvent ? i.clientY : i.touches[0].clientY;
-    n = c - r.offsetLeft, t = p - r.offsetTop, document.addEventListener("mousemove", e), document.addEventListener("mouseup", u), document.addEventListener("touchmove", e, { passive: !1 }), document.addEventListener("touchend", u);
-  }, e = (i) => {
-    if (!a) return;
-    i.cancelable && i.preventDefault();
-    const c = i instanceof MouseEvent ? i.clientX : i.touches[0].clientX, p = i instanceof MouseEvent ? i.clientY : i.touches[0].clientY;
-    let s = c - n, f = p - t;
+  let n = 0, t = 0, s = !1;
+  const l = (a) => {
+    if (a.target.closest("#hud-close-btn")) return;
+    s = !0;
+    const c = a instanceof MouseEvent ? a.clientX : a.touches[0].clientX, u = a instanceof MouseEvent ? a.clientY : a.touches[0].clientY;
+    n = c - r.offsetLeft, t = u - r.offsetTop, document.addEventListener("mousemove", e), document.addEventListener("mouseup", p), document.addEventListener("touchmove", e, { passive: !1 }), document.addEventListener("touchend", p);
+  }, e = (a) => {
+    if (!s) return;
+    a.cancelable && a.preventDefault();
+    const c = a instanceof MouseEvent ? a.clientX : a.touches[0].clientX, u = a instanceof MouseEvent ? a.clientY : a.touches[0].clientY;
+    let i = c - n, h = u - t;
     const y = r.offsetWidth, E = r.offsetHeight;
-    s < 10 && (s = 10), s + y > window.innerWidth - 10 && (s = window.innerWidth - y - 10), f < 10 && (f = 10), f + E > window.innerHeight - 10 && (f = window.innerHeight - E - 10), r.style.left = `${s}px`, r.style.top = `${f}px`;
-  }, u = () => {
-    a = !1, document.removeEventListener("mousemove", e), document.removeEventListener("mouseup", u), document.removeEventListener("touchmove", e), document.removeEventListener("touchend", u);
+    i < 10 && (i = 10), i + y > window.innerWidth - 10 && (i = window.innerWidth - y - 10), h < 10 && (h = 10), h + E > window.innerHeight - 10 && (h = window.innerHeight - E - 10), r.style.left = `${i}px`, r.style.top = `${h}px`;
+  }, p = () => {
+    s = !1, document.removeEventListener("mousemove", e), document.removeEventListener("mouseup", p), document.removeEventListener("touchmove", e), document.removeEventListener("touchend", p);
   };
   o.addEventListener("mousedown", l), o.addEventListener("touchstart", l, { passive: !0 });
 }
 function j(o) {
-  o && (h = { ...h, ...o }), I([
+  o && (f = { ...f, ...o }), I([
     "hud-input-field",
     "sparkle-instructions",
     "sparkle-result"
@@ -555,8 +555,8 @@ function j(o) {
   }), window.addEventListener("click", (r) => {
     var n;
     if (d && d.classList.contains("active")) {
-      const a = r.composedPath()[0] || r.target;
-      !d.contains(a) && !((n = a.closest) != null && n.call(a, ".sparkle-overlay")) && C();
+      const s = r.composedPath()[0] || r.target;
+      !d.contains(s) && !((n = s.closest) != null && n.call(s, ".sparkle-overlay")) && C();
     }
   });
 }
